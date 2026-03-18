@@ -1,7 +1,27 @@
 #!/usr/bin/env bash
 
 # Dusk Network Provisioner Node Management Script
-# Version: 4.1.0 - Fixed transfer command and cleaned up
+# Version: 4.2.0 - curl | bash compatible
+# Repository: https://github.com/datavex-pl/dusk-node-manager
+
+# ============================================
+# SAFETY CHECKS FOR CURL | BASH
+# ============================================
+
+# Exit on error, undefined variable, and pipe failure
+set -euo pipefail
+
+# Check if script is being run with sudo
+if [[ $EUID -eq 0 ]]; then
+   echo "This script should not be run as root directly. It will use sudo when needed."
+   exit 1
+fi
+
+# Check for interactive terminal
+if [[ ! -t 0 ]]; then
+    echo "This script must be run interactively"
+    exit 1
+fi
 
 # ============================================
 # CONFIGURATION AND GLOBAL VARIABLES
@@ -81,6 +101,7 @@ print_header() {
     echo -e "${CYAN}${BOLD}"
     echo "╔══════════════════════════════════════════════════════════╗"
     echo "║         DUSK NETWORK PROVISIONER NODE MANAGER           ║"
+    echo "║                    Version 4.2.0                        ║"
     echo "╚══════════════════════════════════════════════════════════╝"
     echo -e "${NC}"
     echo -e "${YELLOW}System Time: $(date '+%Y-%m-%d %H:%M:%S')${NC}"
@@ -400,7 +421,7 @@ transaction_history() {
 }
 
 # ============================================
-# TRANSFER FUNCTIONS (FIXED --rcvr)
+# TRANSFER FUNCTIONS
 # ============================================
 
 transfer_dusk() {
@@ -1262,15 +1283,20 @@ config_menu() {
 # MAIN
 # ============================================
 
+# Print welcome message
+clear
+echo -e "${CYAN}${BOLD}╔══════════════════════════════════════════════════════════╗${NC}"
+echo -e "${CYAN}${BOLD}║     Dusk Node Manager - Starting up...                  ║${NC}"
+echo -e "${CYAN}${BOLD}╚══════════════════════════════════════════════════════════╝${NC}"
+echo
+
 # Prerequisites
 if ! command -v curl &> /dev/null; then
+    echo -e "${YELLOW}${ICON_INFO} Installing curl...${NC}"
     sudo apt-get update && sudo apt-get install -y curl
 fi
 
-# Start
-clear
-echo -e "${CYAN}${BOLD}Starting Dusk Node Manager...${NC}"
-echo -e "${BLUE}User: $CURRENT_USER${NC}"
+echo -e "${BLUE}${ICON_USER} Running as user: ${GREEN}$CURRENT_USER${NC}"
 sleep 1
 
 init_directories
