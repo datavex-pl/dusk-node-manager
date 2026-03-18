@@ -69,8 +69,6 @@ Made with ❤️ for the Dusk community
 
 If you find this tool useful, consider buying us a coffee! Your support helps maintain and improve the script.
 
-[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/yourusername)
-
 Or support via:
 - **DUSK**: `25drmwGknQwYcBR7J3niDDanfX8CvVXNw3rG7dbBRbsHFFcxiy9kWUhwhJvFTsMvPtjisqigLzz2TN8XACaaNzyrT1mJbffkk7BSSrL3T6ebAKomuqEyerQ3JnnXGbAoRtro`
 
