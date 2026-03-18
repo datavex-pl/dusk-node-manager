@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Dusk Network Provisioner Node Management Script
-# Version: 4.4.0 - Improved sudo handling
+# Version: 4.4.0 - Improved sudo handling for curl | bash
 # Repository: https://github.com/datavex-pl/dusk-node-manager
 
 # ============================================
@@ -74,14 +74,9 @@ readonly ICON_BLOB="📦"
 readonly ICON_SYNC="🔄"
 readonly ICON_DOWNLOAD="⬇️"
 
-# Get current user dynamically (handle sudo case)
-if [[ -n "${SUDO_USER:-}" ]]; then
-    readonly CURRENT_USER="$SUDO_USER"
-    readonly CURRENT_HOME=$(getent passwd "$SUDO_USER" | cut -d: -f6)
-else
-    readonly CURRENT_USER=$(whoami)
-    readonly CURRENT_HOME="$HOME"
-fi
+# Get current user dynamically (after sudo handling)
+readonly CURRENT_USER="$USER"
+readonly CURRENT_HOME="$HOME"
 
 # Installation paths
 readonly DUSK_INSTALL_DIR="/opt/dusk"
@@ -115,7 +110,7 @@ print_header() {
     echo -e "${CYAN}${BOLD}"
     echo "╔══════════════════════════════════════════════════════════╗"
     echo "║         DUSK NETWORK PROVISIONER NODE MANAGER           ║"
-    echo "║                    Version 4.3.0                        ║"
+    echo "║                    Version 4.4.0                        ║"
     echo "╚══════════════════════════════════════════════════════════╝"
     echo -e "${NC}"
     echo -e "${YELLOW}System Time: $(date '+%Y-%m-%d %H:%M:%S')${NC}"
