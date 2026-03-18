@@ -22,3 +22,16 @@ A lightweight bash script to effortlessly install, configure, and manage a **Dus
 wget https://raw.githubusercontent.com/datavex-pl/dusk-node-manager/main/dusk-manager.sh
 chmod +x dusk-manager.sh
 ./dusk-manager.sh
+
+
+The Setup Assistant will guide you through:
+
+1. Network selection (Mainnet / Testnet)
+
+2. Node installation (official installer)
+
+3. Wallet creation or restoration
+
+4. Consensus key export & password setup
+
+5. Node start and optional fast‑sync
