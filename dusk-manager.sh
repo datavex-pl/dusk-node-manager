@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Dusk Network Provisioner Node Management Script
-# Version: 4.3.0 - Fixed curl | sudo bash compatibility
+# Version: 4.4.0 - Improved sudo handling
 # Repository: https://github.com/datavex-pl/dusk-node-manager
 
 # ============================================
@@ -11,21 +11,19 @@
 # Exit on error, undefined variable, and pipe failure
 set -euo pipefail
 
-# Check if script is being run with sudo and handle it gracefully
-if [[ $EUID -eq 0 ]]; then
-    # Check if SUDO_USER exists (we're in a sudo environment)
-    if [[ -n "${SUDO_USER:-}" ]]; then
-        # We're running via sudo, but we want to drop privileges for the menu
-        echo -e "\033[0;33m⚠️  Detected sudo execution. Dropping to normal user for menu...\033[0m"
-        # Re-launch the script as the original user
-        exec sudo -u "$SUDO_USER" bash "$0" "$@"
-        exit 0
-    else
-        # We're actually root (not via sudo)
-        echo -e "\033[0;31m❌ This script should not be run as root directly.\033[0m"
-        echo -e "\033[0;33mPlease run it as a normal user (sudo will be prompted when needed).\033[0m"
-        exit 1
-    fi
+# If running under sudo, adjust HOME and USER to the original user
+if [[ $EUID -eq 0 && -n "${SUDO_USER:-}" ]]; then
+    # We are root via sudo – preserve original user's environment
+    ORIGINAL_USER="$SUDO_USER"
+    ORIGINAL_HOME=$(getent passwd "$ORIGINAL_USER" | cut -d: -f6)
+    export HOME="$ORIGINAL_HOME"
+    export USER="$ORIGINAL_USER"
+    echo -e "\033[0;33m⚠️  Running with sudo – using $ORIGINAL_USER's home directory.\033[0m"
+elif [[ $EUID -eq 0 ]]; then
+    # Running as real root (not via sudo) – not recommended
+    echo -e "\033[0;31m❌ This script should not be run as root directly.\033[0m"
+    echo -e "\033[0;33mPlease run it as a normal user (sudo will be prompted when needed).\033[0m"
+    exit 1
 fi
 
 # Check for interactive terminal
