@@ -11,7 +11,7 @@ A lightweight bash script to effortlessly install, configure, and manage a **Dus
 ## 📦 Prerequisites
 
 - Ubuntu 24.04 LTS  
-- 2+ CPU cores, 4+ GB RAM, 50+ GB free disk  
+- 4+ CPU cores, 8+ GB RAM, 200+ GB free disk  
 - Open ports: `22/tcp` (SSH), `9000/udp` (Kadcast) – optional: `8080/tcp`
 
 ---
